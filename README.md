@@ -13,19 +13,16 @@ gem 'activemerchant'
 require 'active_merchant'
 ActiveMerchant::Billing::Base.mode = :test
 gateway = ActiveMerchant::Billing::TrustCommerceGateway.new(
-  :login => '',
-  :password => '')
+  :login => 'TestMerchant',
+  :password => 'password')
 amount = 1000
 credit_card = ActiveMerchant::Billing::CreditCard.new(
-  :first_name => '',
-  : => '',
-  : => '',
-  : => '',
-  : => '',
-  : => '', 
-  : => '', 
-  : => '', 
-  : => '')
+  :first_name => 'Bob',
+  :last_name => 'Bobsen',
+  :number => '424242424242424242',
+  :month => '8',
+  :year => Time.now.year+1,
+  :verification_value => '000')
 if credit_card.validate.empty?
   response = gateway.purchase(amount, credit_card)
   if response.success?
@@ -38,6 +35,25 @@ end
 
 ```
 
-```
+```ruby
+gateway = SomeGateway.new
+response = gateway.purchase(1000, credit_card)
+
+if response.success?
+  puts "Payment complete!"
+else
+  puts "Payment failed: #{response.message}"
+end
+
+credit_card = ActiveMerchat::Billing::CreditCard.new(
+  :first_name => 'Steve',
+  :last_name => 'Smith',
+  :month => '9',
+  :year => '2022',
+  :brand => 'visa',
+  :number => '4242424242424242',
+  :verification_value => '424')
+  
+credit_card = ActiveMerchant::Billing::CreditCard.new(params[:credit_card])
 
 ```
